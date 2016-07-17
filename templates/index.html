@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <h1>Тестовое задание</h1>
+    <h4>Парсинг страниц по ссылкам с указанием временного интервала и количества повторений</h4>
+    <p>Обратите внимание, что при отправке данных страница обновляется, но запись может появиться не сразу, т.к. задача
+       попадает в очередь, скорее всего вам придётся подаждать пару секунд и повторно обновить страницу.
+      В случае если, вы указываете "Интервал в секундах" и/или "Количество повторений", то соответсвенно
+      нужно выждать заданный интервал времени.</p>
+  </div>
+</div>
+<div class="row">
+    <div class="jumbotron m-a-1 p-t-2 p-b-2">
+        <form method='POST'>
+            {% csrf_token %}
+            {{ form|crispy }}<br />
+            <input type="submit" class="btn btn-primary" value="Нажми на меня">
+        </form>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <h4>Очередь задач и первичные данные</h4>
+        <table class="table" style="font-size: small;">
+            <thead><tr><th>Дата создания</th><th>URL</th><th>ID Задачи</th><th>Результат</th></tr></thead>
+            <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.created_on|date:"d.m.Y h:m:s" }}</td>
+                        <td>{{ task.url }}</td>
+                        <td>{{ task.job_id }}</td>
+                        <td>{{ task.results }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-8">
+        <h4>Результат парсинга</h4>
+        <table class="table" style="font-size: small;">
+            <thead><tr><th>Дата обновления</th><th>URL</th><th>TITLE</th><th>H1</th><th>ENCODING</th><th>Результат</th></tr></thead>
+            <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.updated_on|date:"d.m.Y h:m:s" }}</td>
+                        <td>{{ task.url }}</td>
+                        <td>{{ task.title }}</td>
+                        <td>{{ task.heading }}</td>
+                        <td>{{ task.encoding }}</td>
+                        <td>{{ task.results }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
