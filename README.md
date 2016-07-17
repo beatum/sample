@@ -1,4 +1,4 @@
-# Sample Project - Asynchronous tasks in django with django-rq.
+# Sample Project - Asynchronous tasks in django with django-rq and url parsing with Beautiful Soup.
 
 This project is scaffolded by Ivan Semernyakov <direct@beatum-group.ru>, read the docs for more details.
 
