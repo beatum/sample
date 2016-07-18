@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
 """
 Created by Ivan Semernyakov <direct@beatum-group.ru> on July 2016.
 """
@@ -20,20 +21,17 @@ class SourceURLForm(forms.Form):
                                    '256 символов')
     schedule_times = forms.IntegerField(label='Количество повторений',
                                         required=False,
+                                        initial=1,
                                         help_text='Сколько раз выполнять эту '
                                                   'задачу, для однократного '
-                                                  'выполнения задачи оставьте '
-                                                  'поле пустым или введите 0')
+                                                  'выполнения задачи укажите 1')
     schedule_interval = forms.IntegerField(label='Интервал в секундах',
                                            required=False,
+                                           initial=1,
                                            help_text='Через какое количество '
                                                      'времени выполнять эту '
                                                      'задачу, '
-                                                     'указывается в секундах, '
-                                                     'оставьте это поле '
-                                                     'пустым, если '
-                                                     'хотите чтобы задача '
-                                                     'выполнилась сразу')
+                                                     'указывается в секундах')
 
     def clean(self):
         data = super(SourceURLForm, self).clean()
@@ -41,10 +39,9 @@ class SourceURLForm(forms.Form):
         schedule_interval = data.get('schedule_interval')
         print data
 
-        if schedule_times and not schedule_interval:
+        if schedule_times and not schedule_interval or not schedule_times and\
+                schedule_interval:
             msg = 'Пожалуйста заполните два поля интервал в секундах и ' \
                   'количество повторений, либо оба поля оставьте пустыми'
             self.add_error('schedule_times', msg)
             self.add_error('schedule_interval', msg)
-
-
